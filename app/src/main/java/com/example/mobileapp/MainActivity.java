@@ -19,5 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         myRef.setValue("Congrats!! Njoud was here");
         //NJ was here??
+
+        //njoudddd
     }
 }
