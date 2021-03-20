@@ -18,6 +18,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("message");
 
         myRef.setValue("Congrats!! Njoud was here");
-        //NJ was here
+        //NJ was here??
     }
 }
