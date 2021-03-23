@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
@@ -14,12 +15,15 @@ import java.util.Calendar;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.app.TimePickerDialog;
+import android.widget.TimePicker;
 
 public class popupWindow extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     Spinner importance;
-    private TextView mDisplayDate;
+    private EditText mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,13 +35,33 @@ public class popupWindow extends AppCompatActivity {
         int width = sa.widthPixels;
         int height = sa.heightPixels;
         getWindow().setLayout((int) (width * .9), (int) (height * .9));
-
+//dropdown menu
         importance = findViewById(R.id.importance);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.importance,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         importance.setAdapter(adapter);
+        Calendar cal2 = Calendar.getInstance();
+        //time
+        final int hour = cal2.get(Calendar.HOUR_OF_DAY);
+        final int minute = cal2.get(Calendar.MINUTE);
+        final EditText time = (EditText) findViewById(R.id.time);
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        mDisplayDate = (TextView) findViewById(R.id.date);
+                TimePickerDialog timePick = new TimePickerDialog(popupWindow.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        time.setText(i + ":" + i1);
+                    }
+                }, hour , minute , true);
+                timePick.setTitle("Select date time");
+                timePick.show();
+            }
+        });//time end
+
+//Date
+        mDisplayDate = (EditText) findViewById(R.id.date);
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +88,6 @@ public class popupWindow extends AppCompatActivity {
                 String date = month + "/" + day + "/" + year;
                mDisplayDate.setText(date);
             }
-        };
+        }; //end date
     }
 }

@@ -44,15 +44,25 @@
       android:text="Select date and time"
       android:layout_marginTop="30dp"
       android:layout_marginLeft="45dp"/>
-        <TextView
+        <EditText
             android:id="@+id/date"
             android:layout_width="330dp"
             android:layout_height="49dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="250dp"
-            android:hint="Pick a date and time"
+            android:hint="Pick a date"
            />
+
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="330dp"
+            android:layout_height="49dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="250dp"
+            android:hint="Pick a time"
+            />
 
 
         <TextView
@@ -77,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="146dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="60dp">
+            android:layout_marginTop="25dp">
 
             <Button
                 android:id="@+id/cancel"
