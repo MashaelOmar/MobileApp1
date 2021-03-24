@@ -67,8 +67,9 @@ public class popupWindow extends AppCompatActivity {
                 dialog.show();
             }
         });
-        Calendar cal2 = Calendar.getInstance();
+
         //time
+        Calendar cal2 = Calendar.getInstance();
         final int hour = cal2.get(Calendar.HOUR_OF_DAY);
         final int minute = cal2.get(Calendar.MINUTE);
         final EditText time = (EditText) findViewById(R.id.time);
@@ -96,7 +97,7 @@ public class popupWindow extends AppCompatActivity {
         Button add;
         title=(EditText)findViewById(R.id.Title);
         Time=(EditText)findViewById(R.id.time);
-        add=(Button)findViewById(R.id.add);
+        add=(Button)findViewById(R.id.addreminder);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,7 +141,7 @@ public class popupWindow extends AppCompatActivity {
     }
 
     private void AddReminder(){
-        Button addBtn = (Button)findViewById(R.id.add);
+        Button addBtn = (Button)findViewById(R.id.addreminder);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
