@@ -1,10 +1,15 @@
 package com.example.mobileapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.allyants.notifyme.NotifyMe;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.ArrayAdapter;
@@ -28,10 +33,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class popupWindow extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    final static int req1=1;
+    public String a = "0";
+     int year,month,day,hour,minute;
     Spinner importance;
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private ListView listView;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +63,9 @@ public class popupWindow extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+                day = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         popupWindow.this,
@@ -70,8 +79,8 @@ public class popupWindow extends AppCompatActivity {
 
         //time
         Calendar cal2 = Calendar.getInstance();
-        final int hour = cal2.get(Calendar.HOUR_OF_DAY);
-        final int minute = cal2.get(Calendar.MINUTE);
+        hour = cal2.get(Calendar.HOUR_OF_DAY);
+        minute = cal2.get(Calendar.MINUTE);
         final EditText time = (EditText) findViewById(R.id.time);
         time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +96,6 @@ public class popupWindow extends AppCompatActivity {
                 timePick.show();
             }
         });//time end
-
 
         //save to firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -131,6 +139,15 @@ public class popupWindow extends AppCompatActivity {
                mDisplayDate.setText(date);
             }
         };
+        Calendar rem = Calendar.getInstance();
+        rem.set(year, month, day, hour, minute);
+        EditText title1 = (EditText)findViewById(R.id.Title);
+        NotifyMe notifyMe = new NotifyMe.Builder (getApplicationContext())
+                .title(title1.getText().toString())
+                .color( 255,  0,  0,  255)
+                .led_color( 255,  255,  255,  255)
+                .time(rem)
+                .build();
 
         EditText et_title,et_date,et_time,et_p;
         et_title = findViewById(R.id.Title);
