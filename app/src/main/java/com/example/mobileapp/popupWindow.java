@@ -2,6 +2,7 @@ package com.example.mobileapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +10,13 @@ import android.util.DisplayMetrics;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.view.View;
 import android.graphics.drawable.ColorDrawable;
+
 import java.util.Calendar;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -28,6 +31,7 @@ public class popupWindow extends AppCompatActivity {
     Spinner importance;
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +86,9 @@ public class popupWindow extends AppCompatActivity {
                 timePick.show();
             }
         });//time end
-        //Lama
+
+
+        //save to firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("Task");
         Task task =new Task();
@@ -99,7 +105,6 @@ public class popupWindow extends AppCompatActivity {
                 String d = mDisplayDate.getText().toString();
                 String time = Time.getText().toString();
                 task.setTitle(t);
-                task.setComplete(false);
                 task.setImportance(p);
                 task.setDueDate(d);
                 task.setDueTime(time);
@@ -115,6 +120,7 @@ public class popupWindow extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -125,5 +131,36 @@ public class popupWindow extends AppCompatActivity {
                mDisplayDate.setText(date);
             }
         };
+
+        EditText et_title,et_date,et_time,et_p;
+        et_title = findViewById(R.id.Title);
+        et_date = findViewById(R.id.date);
+        et_time = findViewById(R.id.time);
+        AddReminder();
+    }
+
+    private void AddReminder(){
+        Button addBtn = (Button)findViewById(R.id.add);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Extract data from UI
+                EditText title =(EditText)findViewById(R.id.Title);
+                EditText date =(EditText)findViewById(R.id.date);
+                EditText time =(EditText)findViewById(R.id.time);
+                String t = title.getText().toString();
+                String d = date.getText().toString();
+                String ti = time.getText().toString();
+                String imp = importance.getSelectedItem().toString();
+                //Pass data
+                Intent i = new Intent();
+                i.putExtra("Title",t);
+                i.putExtra("Date",d);
+                i.putExtra("Time",ti);
+                i.putExtra("Importance",imp);
+                setResult(Activity.RESULT_OK,i);
+                finish();
+            }
+        });
     }
 }

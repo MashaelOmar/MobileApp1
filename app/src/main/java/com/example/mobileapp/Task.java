@@ -4,8 +4,6 @@ public class Task {
 
     //task title
     public  String title;
-    //Marked if task is done
-    public  boolean isComplete;
     //Marked if task is priority
     public  String importance;
     // due date for the task
@@ -15,16 +13,15 @@ public class Task {
 
 
     public Task() {
-        this("",false,"","","");
+        this("","","","");
     }
 
     /**
      * Create a new Task
      */
 
-    public Task(String title, boolean isComplete, String importance, String dueDate,String dueTime) {
+    public Task(String title, String importance, String dueDate,String dueTime) {
         this.title = title;
-        this.isComplete = isComplete;
         this.importance = importance;
         this.dueDate = dueDate;
         this.dueDate = dueDate;
@@ -39,9 +36,6 @@ public class Task {
         return title;
     }
 
-    public boolean isComplete() {
-        return isComplete;
-    }
 
     public String importance() {
         return importance;
@@ -55,9 +49,6 @@ public class Task {
         this.title = title;
     }
 
-    public void setComplete(boolean complete) {
-        isComplete = complete;
-    }
 
     public void setImportance(String importance) {
         this.importance = importance;
@@ -69,5 +60,15 @@ public class Task {
 
     public void setDueTime(String dueTime) {
         this.dueTime = dueTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", dueDate='" + dueDate + '\'' +
+                ", dueTime='" + dueTime + '\'' +
+                ", importance='" + importance + '\'' +
+                '}';
     }
 }
