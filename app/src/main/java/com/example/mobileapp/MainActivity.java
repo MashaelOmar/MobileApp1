@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         //new
         //list view
 
-
+        loadTasks();
         add = (FloatingActionButton) findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,37 @@ public class MainActivity extends AppCompatActivity {
         Intent popupwindow = new Intent(MainActivity.this, popupWindow.class);
         startActivityForResult(popupwindow,REQUEST_CODE);
     }
+    public void loadTasks(){
+        TRecyclerView = findViewById(R.id.TRecyclerView);
+        List<Task> TList= new ArrayList<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference().child("Task");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                userList.clear();
+                for (DataSnapshot dataSnapshotp : snapshot.getChildren()) {
+                    Task task = dataSnapshotp.getValue(Task.class);
+                    TList.add(task);
+                }
 
+                adapter = new TaskAdapter(MainActivity.this, TList, new ClickListener() {
+                    @Override
+                    public void OnItemClick(View v, int pos) {
+
+                    } // end on item click listener
+                });
+                TRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                TRecyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -80,35 +110,7 @@ public class MainActivity extends AppCompatActivity {
 //                     Task newTask = new Task(t,d,ti,imp);
 //                     MyTasks myTasks = new MyTasks(newTask);
 
-                    TRecyclerView = findViewById(R.id.TRecyclerView);
-                    List<Task> TList= new ArrayList<>();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference().child("Task");
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                userList.clear();
-                            for (DataSnapshot dataSnapshotp : snapshot.getChildren()) {
-                                Task task = dataSnapshotp.getValue(Task.class);
-                                TList.add(task);
-                            }
-
-                            adapter = new TaskAdapter(MainActivity.this, TList, new ClickListener() {
-                                @Override
-                                public void OnItemClick(View v, int pos) {
-
-                                } // end on item click listener
-                            });
-                            TRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                            TRecyclerView.setAdapter(adapter);
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    loadTasks();
 
                     Toast.makeText(getApplicationContext(),"Reminder added",1000).show();
                 } else {

@@ -143,6 +143,9 @@ public class popupWindow extends AppCompatActivity {
     private void AddReminder(){
         Button addBtn = (Button)findViewById(R.id.addreminder);
         addBtn.setOnClickListener(new View.OnClickListener() {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference().child("Task");
+            Task task =new Task();
             @Override
             public void onClick(View v) {
                 //Extract data from UI
@@ -153,6 +156,11 @@ public class popupWindow extends AppCompatActivity {
                 String d = date.getText().toString();
                 String ti = time.getText().toString();
                 String imp = importance.getSelectedItem().toString();
+                task.setTitle(t);
+                task.setImportance(imp);
+                task.setDueDate(d);
+                task.setDueTime(ti);
+                myRef.push().setValue(task);
                 //Pass data
                 Intent i = new Intent();
                 i.putExtra("Title",t);
