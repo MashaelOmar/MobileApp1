@@ -5,39 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/reminderbg2">
+    android:background="@drawable/reminderbg2"
+    android:orientation="horizontal">
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/TRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="100dp"
+        />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="130dp"
+        android:layout_marginLeft="-300dp"
         android:layout_marginTop="40dp"
         android:text="My Reminders"
         android:textSize="25dp"
         tools:layout_editor_absoluteX="194dp"
         tools:layout_editor_absoluteY="40dp" />
 
-    <ListView
-        android:id="@+id/reminder"
-        android:layout_width="371dp"
-        android:layout_height="334dp"
-        android:layout_marginLeft="-270dp"
-        android:layout_marginTop="100dp">
 
-    </ListView>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"
         android:layout_width="185dp"
         android:layout_height="-3343dp"
-        android:layout_marginLeft="-80dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="670dp"
         android:layout_marginBottom="11dp"
         android:background="#FAFAFA"
         app:backgroundTint="#00BCD4"
         app:srcCompat="@drawable/ic_baseline_add_24"
         tools:ignore="VectorDrawableCompat" />
+
+
 
 </LinearLayout>
