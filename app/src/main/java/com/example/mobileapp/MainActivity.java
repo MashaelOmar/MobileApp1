@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,14 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Congrats!!!! Njoud was here");
-        //NJ was here??//....
-
-        //new
         //list view
 
         loadTasks();
@@ -67,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(popupwindow,REQUEST_CODE);
     }
     public void loadTasks(){
-        TRecyclerView = findViewById(R.id.TRecyclerView);
-        List<Task> TList= new ArrayList<>();
+        TRecyclerView = findViewById(R.id.Recycler);
+        List<Task> List= new ArrayList<>();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("Task");
         myRef.addValueEventListener(new ValueEventListener() {
@@ -77,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
 //                userList.clear();
                 for (DataSnapshot dataSnapshotp : snapshot.getChildren()) {
                     Task task = dataSnapshotp.getValue(Task.class);
-                    TList.add(task);
+                    List.add(task);
                 }
 
-                adapter = new TaskAdapter(MainActivity.this, TList, new ClickListener() {
+                adapter = new TaskAdapter(MainActivity.this, List, new ClickListener() {
                     @Override
                     public void OnItemClick(View v, int pos) {
 
@@ -97,18 +91,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    @SuppressLint("WrongConstant")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE:
                 if (resultCode == Activity.RESULT_OK) {
-//                     String t = data.getStringExtra("Title");
-//                     String d = data.getStringExtra("Date");
-//                     String ti = data.getStringExtra("Time");
-//                     String imp = data.getStringExtra("Importance");
-//                     Task newTask = new Task(t,d,ti,imp);
-//                     MyTasks myTasks = new MyTasks(newTask);
 
                     loadTasks();
 

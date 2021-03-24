@@ -13,40 +13,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#A6FFFFFF"
+        android:background="#F8F6F1"
         android:orientation="vertical"
         >
 
         <TextView
-            android:id="@+id/HTitle"
+            android:id="@+id/titleD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="0dp"
             android:text="Title"
             android:textSize="20dp"
-            android:textColor="#00BCD4"
+            android:textColor="#FFADABA2"
             />
 
         <TextView
-            android:id="@+id/HDate"
+            android:id="@+id/dateD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:text="Date"
             android:textSize="20dp"
-            android:textColor="#00BCD4"
+            android:textColor="#FFADABA2"
             />
         <TextView
-            android:id="@+id/HTime"
+            android:id="@+id/timeD"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:text="Time"
             android:textSize="20dp"
-            android:textColor="#00BCD4"
+            android:textColor="#FFADABA2"
             />
 
 

@@ -39,12 +39,12 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private List<Task> TList;
+    private List<Task> List;
     private Context context;
     ClickListener listener;
 
     public TaskAdapter(Context context, List<Task> TList, ClickListener listener){
-        this.TList = TList;
+        this.List = TList;
         this.context = context;
         this.listener=listener;
 
@@ -67,7 +67,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        Task reim = TList.get(position);
+        Task reim = List.get(position);
         holder.remTitle.setText(reim.getTitle());
         holder.remDate.setText(reim.getDueDate());
         holder.remTime.setText(reim.getDueTime());
@@ -78,7 +78,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public int getItemCount() {
-        return TList.size();
+        return List.size();
     }
 
 
@@ -89,14 +89,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            remTitle = itemView.findViewById(R.id.HTitle);
-            remDate=itemView.findViewById(R.id.HDate);
-            remTime=itemView.findViewById(R.id.HTime);
+            remTitle = itemView.findViewById(R.id.titleD);
+            remDate=itemView.findViewById(R.id.dateD);
+            remTime=itemView.findViewById(R.id.timeD);
 
 
         }
 
-    }//end ChatHolder
+    }
 
 }
 

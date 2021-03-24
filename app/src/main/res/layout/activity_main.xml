@@ -10,7 +10,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/TRecyclerView"
+        android:id="@+id/Recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
@@ -40,7 +40,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="670dp"
         android:layout_marginBottom="11dp"
-        android:background="#FAFAFA"
+        android:background="#ADABA2"
         app:backgroundTint="#00BCD4"
         app:srcCompat="@drawable/ic_baseline_add_24"
         tools:ignore="VectorDrawableCompat" />
