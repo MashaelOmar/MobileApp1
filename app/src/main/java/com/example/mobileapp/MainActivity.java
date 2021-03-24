@@ -23,6 +23,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private FloatingActionButton add;
     public static final int REQUEST_CODE =100;
+    Task newTask = new Task();
     ListView listView;
     TaskAdapter adapter;
     @Override
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         //NJ was here??//....
 
         //new
+        //list view
+        listView = findViewById(R.id.reminder);
 
         add = (FloatingActionButton) findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 openpopupwindow();
             }
         });
+
     }
     public void onClick(View v)
     {
@@ -66,13 +70,13 @@ public class MainActivity extends AppCompatActivity {
                     String d = data.getStringExtra("Date");
                     String ti = data.getStringExtra("Time");
                     String imp = data.getStringExtra("Importance");
-                    Task newTask = new Task(t,d,t,imp);
-/*                    MyTasks myTasks = new MyTasks(newTask);
-                    adapter = new TaskAdapter(MainActivity.this, myTasks);
-                    listView.setAdapter(adapter); */
+                    Task newTask = new Task(t,d,ti,imp);
+                    MyTasks myTasks = new MyTasks(newTask);
+                    adapter = new TaskAdapter(MainActivity.this,myTasks);
+                    listView.setAdapter(adapter);
                     Toast.makeText(getApplicationContext(),"Reminder added",1000).show();
                 } else {
-                    Log.i("Task:", "Cancel ");
+                    Toast.makeText(getApplicationContext(),"Reminder not added",1000).show();
                 }
         }
     }
