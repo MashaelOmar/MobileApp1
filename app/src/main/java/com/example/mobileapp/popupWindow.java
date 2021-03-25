@@ -1,10 +1,16 @@
 package com.example.mobileapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.ArrayAdapter;
@@ -22,6 +28,7 @@ import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,6 +39,13 @@ public class popupWindow extends AppCompatActivity {
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private ListView listView;
+    private NotificationHelper myNotificationHelper;
+    private Calendar  notificationCalendar;
+    String titleEx ;
+    String dateEx;
+    String timeEx;
+    String imprtaEx;
+    int imprtaExInt=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +57,7 @@ public class popupWindow extends AppCompatActivity {
         int width = sa.widthPixels;
         int height = sa.heightPixels;
         getWindow().setLayout((int) (width * .9), (int) (height * .9));
-
+        myNotificationHelper =new NotificationHelper(this);
         importance = findViewById(R.id.importance);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.importance,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,6 +95,13 @@ public class popupWindow extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         time.setText(i + ":" + i1);
+                        notificationCalendar = Calendar.getInstance();
+                        notificationCalendar.set(Calendar.HOUR_OF_DAY,i);
+//                        c.set(Calendar.MONTH,);
+//                        final int day = c.get(Calendar.DAY_OF_MONTH);
+//                        final int hour = c.get(Calendar.HOUR_OF_DAY);
+                        notificationCalendar.set(Calendar.MINUTE,i1);
+                        notificationCalendar.set(Calendar.SECOND,0);
                     }
                 }, hour , minute , true);
                 timePick.setTitle("Select date time");
@@ -99,17 +120,24 @@ public class popupWindow extends AppCompatActivity {
         Time=(EditText)findViewById(R.id.time);
         add=(Button)findViewById(R.id.addreminder);
         add.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
-                String t = title.getText().toString().trim();
-                String p = importance.getSelectedItem().toString();
-                String d = mDisplayDate.getText().toString();
-                String time = Time.getText().toString();
-                task.setTitle(t);
-                task.setImportance(p);
-                task.setDueDate(d);
-                task.setDueTime(time);
+                titleEx = title.getText().toString().trim();
+                imprtaEx = importance.getSelectedItem().toString();
+                if (imprtaEx.equalsIgnoreCase("h")){
+                    imprtaExInt = 2;
+                }else {
+                    imprtaExInt = 1;
+                }
+                dateEx = mDisplayDate.getText().toString();
+                timeEx = Time.getText().toString();
+                task.setTitle(titleEx);
+                task.setImportance(imprtaEx);
+                task.setDueDate(dateEx);
+                task.setDueTime(timeEx);
                 myRef.push().setValue(task);
+                sendOnChanels(imprtaEx, titleEx,dateEx, timeEx);
             }
         });
 
@@ -129,6 +157,13 @@ public class popupWindow extends AppCompatActivity {
 
                 String date = month + "/" + day + "/" + year;
                mDisplayDate.setText(date);
+                notificationCalendar = Calendar.getInstance();
+                notificationCalendar.set(Calendar.YEAR,year);
+//                        c.set(Calendar.MONTH,);
+//                        final int day = c.get(Calendar.DAY_OF_MONTH);
+//                        final int hour = c.get(Calendar.HOUR_OF_DAY);
+                notificationCalendar.set(Calendar.MONTH,month);
+                notificationCalendar.set(Calendar.DAY_OF_MONTH,day);
             }
         };
 
@@ -171,4 +206,38 @@ public class popupWindow extends AppCompatActivity {
             }
         });
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void sendOnChanels(String importance1, String title, String date,String message) {
+
+        if (importance1.equals("High")){
+            NotificationCompat.Builder nb = myNotificationHelper.getChanelNotification(2,title,date,message);
+            startAlarm(notificationCalendar);
+        }
+        else {
+            NotificationCompat.Builder nb = myNotificationHelper.getChanelNotification(1,title,date,message);
+            startAlarm(notificationCalendar);
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void startAlarm(Calendar c){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this , AlertReceiver.class);
+        intent.putExtra("title", titleEx);
+        intent.putExtra("time", timeEx);
+        intent.putExtra("imp", imprtaEx);
+        intent.putExtra("date", dateEx);
+
+        Log.d("myTag", "This is my message"+imprtaEx);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,imprtaExInt,intent,0);
+        if (!(c.before(Calendar.getInstance()))){
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),pendingIntent);
+        }
+
+        else
+            Toast.makeText(popupWindow.this, "reminder doesn't added", Toast.LENGTH_LONG).show();
+
+    }
+
 }
