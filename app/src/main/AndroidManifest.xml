@@ -19,6 +19,7 @@
         <activity
             android:name=".popupWindow"
             android:theme="@style/AppTheme.pop" />
+        <receiver android:name=".AlertReceiver"/>
     </application>
 
 </manifest>

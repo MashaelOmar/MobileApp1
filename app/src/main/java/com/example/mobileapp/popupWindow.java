@@ -58,56 +58,131 @@ public class popupWindow extends AppCompatActivity {
         int height = sa.heightPixels;
         getWindow().setLayout((int) (width * .9), (int) (height * .9));
         myNotificationHelper =new NotificationHelper(this);
+
         importance = findViewById(R.id.importance);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.importance,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         importance.setAdapter(adapter);
 
-        mDisplayDate = (TextView) findViewById(R.id.date);
-        mDisplayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        popupWindow.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener,
-                        year,month,day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
+//        mDisplayDate = (TextView) findViewById(R.id.date);
+//        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar cal = Calendar.getInstance();
+//                int year = cal.get(Calendar.YEAR);
+//                int month = cal.get(Calendar.MONTH);
+//                int day = cal.get(Calendar.DAY_OF_MONTH);
+//
+//                DatePickerDialog dialog = new DatePickerDialog(
+//                        popupWindow.this,
+//                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+//                        mDateSetListener,
+//                        year,month,day);
+//                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                dialog.show();
+//            }
+//        });
 
         //time
-        Calendar cal2 = Calendar.getInstance();
-        final int hour = cal2.get(Calendar.HOUR_OF_DAY);
-        final int minute = cal2.get(Calendar.MINUTE);
-        final EditText time = (EditText) findViewById(R.id.time);
-        time.setOnClickListener(new View.OnClickListener() {
+//        Calendar cal2 = Calendar.getInstance();
+//        final int hour = cal2.get(Calendar.HOUR_OF_DAY);
+//        final int minute = cal2.get(Calendar.MINUTE);
+//        final EditText time = (EditText) findViewById(R.id.time);
+//        time.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                TimePickerDialog timePick = new TimePickerDialog(popupWindow.this, new TimePickerDialog.OnTimeSetListener() {
+//                    @Override
+//                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+//                        time.setText(i + ":" + i1);
+//                        notificationCalendar = Calendar.getInstance();
+//                        notificationCalendar.set(Calendar.HOUR_OF_DAY,i);
+////                        c.set(Calendar.MONTH,);
+////                        final int day = c.get(Calendar.DAY_OF_MONTH);
+////                        final int hour = c.get(Calendar.HOUR_OF_DAY);
+//                        notificationCalendar.set(Calendar.MINUTE,i1);
+//                        notificationCalendar.set(Calendar.SECOND,0);
+//                    }
+//                }, hour , minute , true);
+//                timePick.setTitle("Select date time");
+//                timePick.show();
+//            }
+//        });//time end
+//
+//        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+//                month = month + 1;
+//                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+//
+//                String date = month + "/" + day + "/" + year;
+//                mDisplayDate.setText(date);
+//                notificationCalendar = Calendar.getInstance();
+//                notificationCalendar.set(Calendar.YEAR,year);
+////                        c.set(Calendar.MONTH,);
+////                        final int day = c.get(Calendar.DAY_OF_MONTH);
+////                        final int hour = c.get(Calendar.HOUR_OF_DAY);
+//                notificationCalendar.set(Calendar.MONTH,month);
+//                notificationCalendar.set(Calendar.DAY_OF_MONTH,day);
+//            }
+//        };
+
+
+
+        final Calendar c = Calendar.getInstance();
+        final int year = c.get(Calendar.YEAR);
+        final int month = c.get(Calendar.MONTH);
+        final int day = c.get(Calendar.DAY_OF_MONTH);
+        final int hour = c.get(Calendar.HOUR_OF_DAY);
+        final int minute = c.get(Calendar.MINUTE);
+        final EditText txtTime = (EditText) findViewById(R.id.time);
+        final EditText txtDate = (EditText) findViewById(R.id.date);
+
+        txtTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
                 TimePickerDialog timePick = new TimePickerDialog(popupWindow.this, new TimePickerDialog.OnTimeSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                        time.setText(i + ":" + i1);
+                        txtTime.setText(i + ":" + i1);
+                        timeEx = txtTime.getText().toString().trim();
+
                         notificationCalendar = Calendar.getInstance();
                         notificationCalendar.set(Calendar.HOUR_OF_DAY,i);
-//                        c.set(Calendar.MONTH,);
-//                        final int day = c.get(Calendar.DAY_OF_MONTH);
-//                        final int hour = c.get(Calendar.HOUR_OF_DAY);
                         notificationCalendar.set(Calendar.MINUTE,i1);
                         notificationCalendar.set(Calendar.SECOND,0);
+
                     }
                 }, hour , minute , true);
                 timePick.setTitle("Select date time");
                 timePick.show();
             }
-        });//time end
+        });
+
+
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePick = new DatePickerDialog(popupWindow.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        txtDate.setText(i + "-" + i1 + "-" + i2);
+                        dateEx = txtDate.getText().toString().trim();
+                        notificationCalendar = Calendar.getInstance();
+                        notificationCalendar.set(Calendar.YEAR,i);
+                        notificationCalendar.set(Calendar.MONTH,i1);
+                        notificationCalendar.set(Calendar.DAY_OF_MONTH,i2);
+                    }
+                }, year , month, day);
+                datePick.setTitle("Select Date");
+                datePick.show();
+
+            }
+        });
+
 
 
         //save to firebase
@@ -124,20 +199,20 @@ public class popupWindow extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 titleEx = title.getText().toString().trim();
-                imprtaEx = importance.getSelectedItem().toString();
-                if (imprtaEx.equalsIgnoreCase("h")){
-                    imprtaExInt = 2;
-                }else {
+                imprtaEx = importance.getSelectedItem().toString().trim();
+                if (imprtaEx.equalsIgnoreCase("Low")){
                     imprtaExInt = 1;
+                }else {
+                    imprtaExInt = 2;
                 }
-                dateEx = mDisplayDate.getText().toString();
-                timeEx = Time.getText().toString();
+//                dateEx = mDisplayDate.getText().toString();
+//                timeEx = Time.getText().toString();
                 task.setTitle(titleEx);
                 task.setImportance(imprtaEx);
                 task.setDueDate(dateEx);
                 task.setDueTime(timeEx);
-                myRef.push().setValue(task);
                 sendOnChanels(imprtaEx, titleEx,dateEx, timeEx);
+                myRef.push().setValue(task);
             }
         });
 
@@ -149,67 +224,54 @@ public class popupWindow extends AppCompatActivity {
             }
         });
 
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
 
-                String date = month + "/" + day + "/" + year;
-               mDisplayDate.setText(date);
-                notificationCalendar = Calendar.getInstance();
-                notificationCalendar.set(Calendar.YEAR,year);
-//                        c.set(Calendar.MONTH,);
-//                        final int day = c.get(Calendar.DAY_OF_MONTH);
-//                        final int hour = c.get(Calendar.HOUR_OF_DAY);
-                notificationCalendar.set(Calendar.MONTH,month);
-                notificationCalendar.set(Calendar.DAY_OF_MONTH,day);
-            }
-        };
 
-        EditText et_title,et_date,et_time,et_p;
-        et_title = findViewById(R.id.Title);
-        et_date = findViewById(R.id.date);
-        et_time = findViewById(R.id.time);
-        AddReminder();
+//        EditText et_title,et_date,et_time,et_p;
+//        et_title = findViewById(R.id.Title);
+//        et_date = findViewById(R.id.date);
+//        et_time = findViewById(R.id.time);
+//        AddReminder();
     }
 
-    private void AddReminder(){
-        Button addBtn = (Button)findViewById(R.id.addreminder);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference().child("Task");
-            Task task =new Task();
-            @Override
-            public void onClick(View v) {
-                //Extract data from UI
-                EditText title =(EditText)findViewById(R.id.Title);
-                EditText date =(EditText)findViewById(R.id.date);
-                EditText time =(EditText)findViewById(R.id.time);
-                String t = title.getText().toString();
-                String d = date.getText().toString();
-                String ti = time.getText().toString();
-                String imp = importance.getSelectedItem().toString();
-                task.setTitle(t);
-                task.setImportance(imp);
-                task.setDueDate(d);
-                task.setDueTime(ti);
-                myRef.push().setValue(task);
-                //Pass data
-                Intent i = new Intent();
-                i.putExtra("Title",t);
-                i.putExtra("Date",d);
-                i.putExtra("Time",ti);
-                i.putExtra("Importance",imp);
-                setResult(Activity.RESULT_OK,i);
-                finish();
-            }
-        });
-    }
+//    private void AddReminder(){
+//        Button addBtn = (Button)findViewById(R.id.addreminder);
+//        addBtn.setOnClickListener(new View.OnClickListener() {
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference myRef = database.getReference().child("Task");
+//            Task task =new Task();
+//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//            @Override
+//            public void onClick(View v) {
+//                //Extract data from UI
+//                EditText title =(EditText)findViewById(R.id.Title);
+//                EditText date =(EditText)findViewById(R.id.date);
+//                EditText time =(EditText)findViewById(R.id.time);
+//                String t = title.getText().toString();
+//                String d = date.getText().toString();
+//                String ti = time.getText().toString();
+//                String imp = importance.getSelectedItem().toString();
+//                task.setTitle(t);
+//                task.setImportance(imp);
+//                task.setDueDate(d);
+//                task.setDueTime(ti);
+//                myRef.push().setValue(task);
+//                sendOnChanels("High", titleEx,dateEx, timeEx);
+//
+//                //Pass data
+//                Intent i = new Intent();
+//                i.putExtra("Title",t);
+//                i.putExtra("Date",d);
+//                i.putExtra("Time",ti);
+//                i.putExtra("Importance",imp);
+//                setResult(Activity.RESULT_OK,i);
+//                finish();
+//            }
+//        });
+//    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendOnChanels(String importance1, String title, String date,String message) {
 
-        if (importance1.equals("High")){
+        if (importance1.equalsIgnoreCase("H")){
             NotificationCompat.Builder nb = myNotificationHelper.getChanelNotification(2,title,date,message);
             startAlarm(notificationCalendar);
         }
