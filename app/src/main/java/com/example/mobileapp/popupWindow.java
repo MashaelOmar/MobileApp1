@@ -139,15 +139,7 @@ public class popupWindow extends AppCompatActivity {
                mDisplayDate.setText(date);
             }
         };
-        Calendar rem = Calendar.getInstance();
-        rem.set(year, month, day, hour, minute);
-        EditText title1 = (EditText)findViewById(R.id.Title);
-        NotifyMe notifyMe = new NotifyMe.Builder (getApplicationContext())
-                .title(title1.getText().toString())
-                .color( 255,  0,  0,  255)
-                .led_color( 255,  255,  255,  255)
-                .time(rem)
-                .build();
+
 
         EditText et_title,et_date,et_time,et_p;
         et_title = findViewById(R.id.Title);
@@ -183,6 +175,17 @@ public class popupWindow extends AppCompatActivity {
                 i.putExtra("Date",d);
                 i.putExtra("Time",ti);
                 i.putExtra("Importance",imp);
+
+                Calendar rem = Calendar.getInstance();
+                rem.set(year, month, day, hour, minute);
+                EditText title1 = (EditText)findViewById(R.id.Title);
+                NotifyMe notifyMe = new NotifyMe.Builder (getApplicationContext())
+                        .title(title1.getText().toString())
+                        .color( 255,  0,  0,  255)
+                        .led_color( 255,  255,  255,  255)
+                        .time(rem)
+                        .build();
+
                 setResult(Activity.RESULT_OK,i);
                 finish();
             }
